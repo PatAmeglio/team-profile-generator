@@ -133,10 +133,65 @@ function promptIntern() {
 
 // Function to generate HTML file based on team member objects
 function generateHTML() {
-  const templatesDir = path.resolve(__dirname, "templates");
-  const mainTemplatePath = path.join(templatesDir, "main.html");
-  
-  // Your code to generate the HTML file goes here
+  const distDir = path.resolve(__dirname, "dist");
+  const mainTemplatePath = path.join(distDir, "index.html");
+
+  fs.readFile(mainTemplatePath, "utf8", (err, data) => {
+    if (err) throw err;
+    const mainTemplate = data;
+
+    const cardTemplates = [];
+
+    for (const member of team) {
+      let cardTemplate;
+      switch (member.getRole()) {
+        case "Manager":
+          cardTemplate = fs.readFileSync(path.join(distDir, "index.html"), "utf8");
+          break;
+        case "Engineer":
+          cardTemplate = fs.readFileSync(path.join(distDir, "index.html"), "utf8");
+          break;
+        case "Intern":
+          cardTemplate = fs.readFileSync(path.join(distDir, "index.html"), "utf8");
+          break;
+        default:
+          throw new Error(`Invalid role: ${member.getRole()}`);
+      }
+      cardTemplate = replacePlaceholders(cardTemplate, "name", member.getName());
+      cardTemplate = replacePlaceholders(cardTemplate, "role", member.getRole());
+      cardTemplate = replacePlaceholders(cardTemplate, "id", member.getId());
+      cardTemplate = replacePlaceholders(cardTemplate, "email", member.getEmail());
+
+      switch (member.getRole()) {
+        case "Manager":
+          cardTemplate = replacePlaceholders(cardTemplate, "extra", `Office Number: ${member.getOfficeNumber()}`);
+          break;
+        case "Engineer":
+          cardTemplate = replacePlaceholders(cardTemplate, "extra", `GitHub: <a href="https://github.com/${member.getGithub()}" target="_blank">${member.getGithub()}</a>`);
+          break;
+        case "Intern":
+          cardTemplate = replacePlaceholders(cardTemplate, "extra", `School: ${member.getSchool()}`);
+          break;
+      }
+
+      cardTemplates.push(cardTemplate);
+    }
+
+    const output = replacePlaceholders(mainTemplate, "cards", cardTemplates.join(""));
+
+    fs.writeFile(path.join(__dirname, "dist", "index.html"), output, err => {
+      if (err) throw err;
+      console.log("Team profile generated successfully.");
+    });
+  });
+}
+
+
+// Helper function to replace placeholders in templates
+function replacePlaceholders(template, placeholder, value) {
+  const pattern = new RegExp(`{{ ${placeholder} }}`, "gm");
+  return template.replace(pattern, value);
 }
 
 // Call promptManager
+promptManager();
