@@ -2,6 +2,7 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const path = require("path");
+const generatePage = require("./src/generatePage")
 
 // Require classes for each team member type
 const Manager = require("./lib/Manager");
@@ -140,48 +141,35 @@ function generateHTML() {
     if (err) throw err;
     const mainTemplate = data;
 
-    const cardTemplates = [];
-
-    for (const member of team) {
-      let cardTemplate;
-      switch (member.getRole()) {
-        case "Manager":
-          cardTemplate = fs.readFileSync(path.join(distDir, "index.html"), "utf8");
-          break;
-        case "Engineer":
-          cardTemplate = fs.readFileSync(path.join(distDir, "index.html"), "utf8");
-          break;
-        case "Intern":
-          cardTemplate = fs.readFileSync(path.join(distDir, "index.html"), "utf8");
-          break;
-        default:
-          throw new Error(`Invalid role: ${member.getRole()}`);
+    const cardsHtml = team.map(member => {
+      let extra = "";
+      if (member.getRole() === "Manager") {
+        extra = `Office Number: ${member.getOfficeNumber()}`;
+      } else if (member.getRole() === "Engineer") {
+        extra = `GitHub: <a href="https://github.com/${member.getGithub()}" target="_blank">${member.getGithub()}</a>`;
+      } else if (member.getRole() === "Intern") {
+        extra = `School: ${member.getSchool()}`;
       }
-      cardTemplate = replacePlaceholders(cardTemplate, "name", member.getName());
-      cardTemplate = replacePlaceholders(cardTemplate, "role", member.getRole());
-      cardTemplate = replacePlaceholders(cardTemplate, "id", member.getId());
-      cardTemplate = replacePlaceholders(cardTemplate, "email", member.getEmail());
+      return `
+        <div class="card">
+          <div class="card-header">
+            <h2>${member.getName()}</h2>
+            <h3>${member.getRole()}</h3>
+          </div>
+          <div class="card-body">
+            <p>ID: ${member.getId()}</p>
+            <p>Email: <a href="mailto:${member.getEmail()}">${member.getEmail()}</a></p>
+            <p>${extra}</p>
+          </div>
+        </div>
+      `;
+    });
 
-      switch (member.getRole()) {
-        case "Manager":
-          cardTemplate = replacePlaceholders(cardTemplate, "extra", `Office Number: ${member.getOfficeNumber()}`);
-          break;
-        case "Engineer":
-          cardTemplate = replacePlaceholders(cardTemplate, "extra", `GitHub: <a href="https://github.com/${member.getGithub()}" target="_blank">${member.getGithub()}</a>`);
-          break;
-        case "Intern":
-          cardTemplate = replacePlaceholders(cardTemplate, "extra", `School: ${member.getSchool()}`);
-          break;
-      }
-
-      cardTemplates.push(cardTemplate);
-    }
-
-    const output = replacePlaceholders(mainTemplate, "cards", cardTemplates.join(""));
+    const output = mainTemplate.replace("{{ cards }}", cardsHtml.join(""));
 
     fs.writeFile(path.join(__dirname, "dist", "index.html"), output, err => {
       if (err) throw err;
-      console.log("Team profile generated successfully.");
+      console.log("The team profile has been generated!");
     });
   });
 }
