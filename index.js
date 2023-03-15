@@ -59,6 +59,7 @@ function promptTeam() {
         return promptIntern();
       default:
         generatePage(team);
+        console.log("Your page has been created!");
     }
   });
 }

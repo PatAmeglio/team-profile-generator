@@ -14,6 +14,13 @@ const createHTML = (team)=> {
         <link rel="stylesheet" href="../dist/style.css">
     </head>
     <body>
+
+    <nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo center">Team Profile</a>
+    </div>
+    </nav>
+
         <main class="container">
     
             ${team.map((teamMember)=> createCard(teamMember)).join("")}
@@ -31,11 +38,9 @@ const createManagerCard = (manager) => {
       <div class="card blue-grey darken-1">
         <div class="card-content white-text">
           <span class="card-title">${manager.name}</span>
-          <p>${manager.id}</p>
-          <p>${manager.email}</p>
-          <p>${manager.officeNumber}</p>
-        </div>
-        <div class="card-action">
+          <p class="id">ID: ${manager.id}</p>
+          <p class="email">Email: <a href="mailto:${manager.email}">${manager.email}</a></p>
+          <p class="office">Office Number: ${manager.officeNumber}</p>
         </div>
       </div>
     </div>
@@ -48,28 +53,24 @@ const createEngineerCard = (engineer) => {
       <div class="card blue-grey darken-1">
         <div class="card-content white-text">
           <span class="card-title">${engineer.name}</span>
-          <p>${engineer.id}</p>
-          <p>${engineer.email}</p>
-          <p>${engineer.github}</p>
-        </div>
-        <div class="card-action">
+          <p class="id">ID: ${engineer.id}</p
+          <p class="email">Email: <a href="mailto:${engineer.email}">${engineer.email}</a></p>
+          <p class="github">Github: <a href="https://github.com/${engineer.github}">${engineer.github}</a></p>
         </div>
       </div>
     </div>
   </div>`
 }
 
-const createinternCard = (intern) => {
+const createInternCard = (intern) => {
     return `<div class="row">
     <div class="col s12 m6">
       <div class="card blue-grey darken-1">
         <div class="card-content white-text">
           <span class="card-title">${intern.name}</span>
-          <p>${intern.id}</p>
-          <p>${intern.email}</p>
-          <p>${intern.school}</p>
-        </div>
-        <div class="card-action">
+          <p class="id">ID: ${intern.id}</p>
+            <p class="email">Email: <a href="mailto:${intern.email}">${intern.email}</a></p>
+            <p class="school">School: ${intern.school}</p>
         </div>
       </div>
     </div>
@@ -81,8 +82,8 @@ const createCard = (teamMember) => {
         return createManagerCard(teamMember);
     } if (teamMember.getRole() === "Engineer") {
         return createEngineerCard(teamMember);
-    } if (teamMember.getRole() === "Inter") {
-        return createinternCard(teamMember);
+    } if (teamMember.getRole() === "Intern") {
+        return createInternCard(teamMember);
     }
 }
 
