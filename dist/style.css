@@ -1,0 +1,23 @@
+nav {
+    text-align: center;
+    margin-bottom: 100px;
+    padding-bottom: 75px;
+    background-color: blue;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.card {
+    text-align: center;
+    width: 300px;
+    margin: 10px;
+  }
+
+  body {
+    background-color: beige;
+  }
