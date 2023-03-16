@@ -37,7 +37,7 @@ const createManagerCard = (manager) => {
     <div class="col s12 m6">
       <div class="card blue-grey darken-1">
         <div class="card-content white-text">
-          <span class="card-title">${manager.name}</span>
+          <span class="card-title">Manager: ${manager.name}</span>
           <p class="id">ID: ${manager.id}</p>
           <p class="email">Email: <a href="mailto:${manager.email}">${manager.email}</a></p>
           <p class="office">Office Number: ${manager.officeNumber}</p>
@@ -52,7 +52,7 @@ const createEngineerCard = (engineer) => {
     <div class="col s12 m6">
       <div class="card blue-grey darken-1">
         <div class="card-content white-text">
-          <span class="card-title">${engineer.name}</span>
+          <span class="card-title">Engineer: ${engineer.name}</span>
           <p class="id">ID: ${engineer.id}</p
           <p class="email">Email: <a href="mailto:${engineer.email}">${engineer.email}</a></p>
           <p class="github">Github: <a href="https://github.com/${engineer.github}">${engineer.github}</a></p>
@@ -67,7 +67,7 @@ const createInternCard = (intern) => {
     <div class="col s12 m6">
       <div class="card blue-grey darken-1">
         <div class="card-content white-text">
-          <span class="card-title">${intern.name}</span>
+          <span class="card-title">Intern: ${intern.name}</span>
           <p class="id">ID: ${intern.id}</p>
             <p class="email">Email: <a href="mailto:${intern.email}">${intern.email}</a></p>
             <p class="school">School: ${intern.school}</p>
